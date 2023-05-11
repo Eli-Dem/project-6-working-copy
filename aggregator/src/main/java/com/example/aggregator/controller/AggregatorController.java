@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RestController
 public class AggregatorController {
@@ -66,6 +67,25 @@ public class AggregatorController {
                 .append("], containing ")
                 .append(entries.size())
                 .append(" entries in ")
+                .append(nanoSeconds / 1000000.0)
+                .append("ms")
+                .toString();
+
+        logger.info(message);
+
+        return entries;
+    }
+
+    @GetMapping("/getAllPalindromes")
+    public List<Entry> getAllPalindromes() {
+
+        StopWatch sw = new StopWatch();
+        sw.start();
+        List<Entry> entries = service.getAllPalindromes();
+        sw.stop();
+
+        long nanoSeconds = sw.getLastTaskTimeNanos();
+        String message = new StringBuilder().append("Retrieved all palindromes in ")
                 .append(nanoSeconds / 1000000.0)
                 .append("ms")
                 .toString();
